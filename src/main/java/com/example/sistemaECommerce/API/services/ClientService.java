@@ -8,6 +8,9 @@ import com.example.sistemaECommerce.API.models.ClientEntity;
 import com.example.sistemaECommerce.API.repositories.ClientRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ClientService {
     private final ClientRepository repository;
@@ -66,6 +69,7 @@ public class ClientService {
                 savedEntity.getEmail()
         );
     }
+
     private ClientEntity findClientByCpf(String cpf) {
         ClientEntity client = repository.findByCpf(cpf);
         if (client == null) {
@@ -73,4 +77,16 @@ public class ClientService {
         }
         return client;
     }
+
+    public List<ClientDTO> getAllClients() {
+        return repository.findAll().stream()
+                .map(entity -> new ClientDTO(
+                        entity.getId(),
+                        entity.getName(),
+                        entity.getCpf(),
+                        entity.getEmail()))
+                .collect(Collectors.toList());
+    }
 }
+
+

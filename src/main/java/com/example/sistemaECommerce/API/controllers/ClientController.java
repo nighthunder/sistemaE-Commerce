@@ -2,11 +2,14 @@ package com.example.sistemaECommerce.API.controllers;
 
 import com.example.sistemaECommerce.API.dtos.ClientDTO;
 import com.example.sistemaECommerce.API.dtos.ClientUpdateDTO;
+import com.example.sistemaECommerce.API.dtos.ProductDTO;
 import com.example.sistemaECommerce.API.services.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/clients")
@@ -21,6 +24,12 @@ public class ClientController {
     public ResponseEntity<ClientDTO> createClient(@Valid @RequestBody ClientDTO client) {
         ClientDTO clientCreated = service.registerClient(client, client.cpf(), client.email());
         return ResponseEntity.status(HttpStatus.CREATED).body(clientCreated);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<ClientDTO>> getAllProducts() {
+        List<ClientDTO> listClients = service.getAllClients();
+        return ResponseEntity.status(HttpStatus.OK).body(listClients);
     }
 
     @GetMapping("/{cpf}")
